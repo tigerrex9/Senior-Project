@@ -15,6 +15,9 @@ from keras import optimizers
 
 from keras import backend as K
 
+
+height, width = 1, 1
+inputShape = (height, width)
 model = keras.models.Sequential()
 
-print("we did it") 
+model.add()
