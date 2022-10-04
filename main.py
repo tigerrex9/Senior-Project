@@ -32,7 +32,18 @@ def make_model(image_resolution, informational_neurons, outputs)
     information = keras.Input(shape=(informational_neurons), name="information")
 
     #input image_data into cnn
+    x = layers.Conv2D(32, 3, padding="same")(image_data)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation("relu")(x)
+    
+    for size in [64, 128, 256]:
+        x = layers.Conv2D(size, 3, padding="same")(x)
+        x = layers.BatchNormalization()(x)
+        x = layers.Activation("relu")(x)
+
+    x = layers.Flatten()(x)
 
     #input information and flattened image_data layer into dense layer
+    x =  
 
     #get output
