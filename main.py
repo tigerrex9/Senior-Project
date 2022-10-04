@@ -29,47 +29,50 @@ print(image.shape)
 print(normalized_image.shape)
 print(flattened_image.shape)
 
-def make_model(image_resolution, informational_neurons, outputs, dropout_rate)
+def make_model(image_resolution, informational_neurons, outputs, dropout_rate):
     image_data = keras.Input(shape=(image_resolution), name="image_data")
     information = keras.Input(shape=(informational_neurons), name="information")
 
     all_inputs = [image_data, information]
 
     #input image_data into cnn
-    x = layers.Conv2D(32, 3, padding="same")(image_data)
-    x = layers.BatchNormalization()(x)
-    x = layers.Activation("relu")(x)
+    x = keras.layers.Conv2D(32, 3, padding="same")(image_data)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Activation("relu")(x)
     
-    x = layers.Dropout(dropout_rate)(x)
+    x = keras.layers.Dropout(dropout_rate)(x)
 
     for size in [64, 128, 256]:
-        x = layers.Conv2D(size, 3, padding="same")(x)
-        x = layers.BatchNormalization()(x)
-        x = layers.Activation("relu")(x)
+        x = keras.layers.Conv2D(size, 3, padding="same")(x)
+        x = keras.layers.BatchNormalization()(x)
+        x = keras.layers.Activation("relu")(x)
         
-        x = layers.Dropout(dropout_rate)(x)
+        x = keras.layers.Dropout(dropout_rate)(x)
 
-    x = layers.Flatten()(x)
+    x = keras.layers.Flatten()(x)
 
     #input information and flattened image_data layer into dense layer
-    concatenated_layers = layers.Concatenate([x, information])
+    concatenated_layers = keras.layers.Concatenate()([x, information])
 
-    x = layers.Dense(32, activation="relu")(cancatenated_layers)
-    x = layers.Dropout(dropout_rate)(x)
+    x = keras.layers.Dense(32, activation="relu")(concatenated_layers)
+    x = keras.layers.Dropout(dropout_rate)(x)
 
     #get output
-    output = layers.Dense(outputs, activation="relu")(x)
+    output = keras.layers.Dense(outputs, activation="relu")(x)
 
     model = keras.Model(all_inputs, output)
     return model
+
+
+
 
 model = make_model([height, width,depth], outputs, outputs, 0.2)
 
 #compile model (update this please)
 model.compile(
-    optimizer = keras.optimizer.Adam(1e-3),
+    optimizer = keras.optimizers.Adam(1e-3),
     loss = "categorical_crossentropy",    
     metrics = ["accuracy"],
 )
 
-
+model.save('saved_model')
