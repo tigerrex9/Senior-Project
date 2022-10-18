@@ -15,20 +15,11 @@ from keras import optimizers
 
 from keras import backend as K
 
-#Image properties
+#properties
 height, width, depth = 320, 240, 3
 outputs = 5
 
-
-#Template for image
-image = np.zeros((height,width,depth))
-normalized_image = np.divide(image, 255)
-flattened_image = np.reshape(normalized_image, [-1,np.product(normalized_image.shape)])
-
-print(image.shape)
-print(normalized_image.shape)
-print(flattened_image.shape)
-
+#make model function
 def make_model(image_resolution, informational_neurons, outputs, dropout_rate):
     image_data = keras.Input(shape=(image_resolution), name="image_data")
     information = keras.Input(shape=(informational_neurons), name="information")
@@ -64,9 +55,7 @@ def make_model(image_resolution, informational_neurons, outputs, dropout_rate):
     return model
 
 
-
-
-model = make_model([height, width,depth], outputs, outputs, 0.2)
+model = make_model([height, width, depth], outputs, outputs, 0.2)
 
 #compile model (update this please)
 model.compile(
@@ -75,4 +64,5 @@ model.compile(
     metrics = ["accuracy"],
 )
 
+#save model
 model.save('saved_model')
