@@ -20,6 +20,7 @@ height, width, depth = 320, 240, 3
 outputs = 5
 
 #make model function
+#update with pooling layers and a larger dense layer section
 def make_model(image_resolution, informational_neurons, outputs, dropout_rate):
     image_data = keras.Input(shape=(image_resolution), name="image_data")
     information = keras.Input(shape=(informational_neurons), name="information")
@@ -65,4 +66,11 @@ model.compile(
 )
 
 #save model
-model.save('saved_model')
+model.save("saved_model")
+
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+#save tflite
+with open("model.tflite", "wb") as f:
+    f.write(tflite_model)
