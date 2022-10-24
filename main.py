@@ -38,7 +38,8 @@ def make_model(image_resolution, informational_neurons, outputs, dropout_rate):
         x = keras.layers.Conv2D(size, 3, padding="same")(x)
         x = keras.layers.BatchNormalization()(x)
         x = keras.layers.Activation("relu")(x)
-        
+
+        x = keras.layers.MaxPooling2D(pool_size=3, padding="same")(x)
         x = keras.layers.Dropout(dropout_rate)(x)
 
     x = keras.layers.Flatten()(x)
